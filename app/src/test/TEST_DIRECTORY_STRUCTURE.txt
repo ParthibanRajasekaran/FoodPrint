@@ -1,0 +1,35 @@
+test/
+  domain/
+    ScoringServiceTest.kt
+  presentation/
+    DashboardFragmentTest.kt
+    DashboardSnapshotTest.kt
+  e2e/
+    ScanAndScoreE2ETest.kt
+  services/
+    OCRServiceTest.kt
+    ClassificationServiceTest.kt
+  orchestrator/
+    ReceiptOrchestratorTest.kt
+package com.foodprint.scanner.domain
+
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+class ScoringServiceTest {
+    @Test
+    fun `score calculation is correct`() = runBlocking {
+        val scoringService = ScoringService()
+        val items = listOf(
+            ItemClassification("Apple", "Natural", 0.99f),
+            ItemClassification("Bread", "Processed", 0.8f),
+            ItemClassification("Soda", "Ultra-Processed", 0.7f)
+        )
+        val score = scoringService.calculateScore(items)
+        assertEquals(100 * ((1*2 + 1*1 + 1*0) / 3.0), score, 0.01)
+    }
+}
+
