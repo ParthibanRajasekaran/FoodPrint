@@ -7,6 +7,8 @@ class ScoringService {
         val processed = items.count { it.category.equals("Processed", ignoreCase = true) }
         val ultraProcessed = items.count { it.category.equals("Ultra-Processed", ignoreCase = true) }
         val total = items.size
-        return ((natural * 2 + processed * 1 + ultraProcessed * 0).toDouble() / total) * 100
+        // Maximum score per item is 2, so divide by (total * 2) to keep result in 0..100
+        val weightedSum = natural * 2 + processed
+        return (weightedSum.toDouble() / (total * 2)) * 100
     }
 }
